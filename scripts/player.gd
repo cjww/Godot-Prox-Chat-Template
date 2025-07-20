@@ -1,0 +1,45 @@
+extends CharacterBody3D
+
+@onready var camera_3d: Camera3D = $Camera3D
+@onready var name_label: Label3D = $NameLabel
+@export var user_name: String = "Terry"
+@export var steam_id: int = 0
+
+const SPEED = 5.0
+const JUMP_VELOCITY = 4.5
+
+func _ready() -> void:
+	add_to_group("players")
+	
+	if is_multiplayer_authority():
+		camera_3d.set_current(true)
+		user_name = SteamManager.STEAM_USERNAME
+		steam_id = SteamManager.STEAM_ID
+	else:
+		steam_id = multiplayer.multiplayer_peer.get_steam64_from_peer_id(get_multiplayer_authority())
+		user_name = Steam.getFriendPersonaName(steam_id)
+		name_label.text = user_name
+		
+func _physics_process(delta: float) -> void:
+	if !is_multiplayer_authority():
+		return
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# Handle jump.
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if direction:
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+
+	move_and_slide()

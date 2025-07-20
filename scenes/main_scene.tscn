@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://chwco25oabi64"]
+
+[ext_resource type="Script" uid="uid://cgd012qomex80" path="res://scripts/main_scene.gd" id="1_7ykc4"]
+[ext_resource type="Script" uid="uid://76dl87lk3o6f" path="res://scripts/player_spawner.gd" id="1_w2twt"]
+[ext_resource type="PackedScene" uid="uid://dee1p76o0ldav" path="res://scenes/player.tscn" id="2_7ykc4"]
+
+[node name="MainScene" type="Node3D"]
+script = ExtResource("1_7ykc4")
+
+[node name="LobbyUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyUI"]
+custom_minimum_size = Vector2(500, 300)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LobbyUI/VBoxContainer"]
+layout_mode = 2
+
+[node name="HostBtn" type="Button" parent="LobbyUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "HOST"
+
+[node name="JoinBtn" type="Button" parent="LobbyUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "JOIN"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="LobbyUI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LobbiesList" type="VBoxContainer" parent="LobbyUI/VBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="LobbyUI/VBoxContainer/ScrollContainer/LobbiesList"]
+layout_mode = 2
+text = "kjsdhksjd"
+
+[node name="Button2" type="Button" parent="LobbyUI/VBoxContainer/ScrollContainer/LobbiesList"]
+layout_mode = 2
+text = "HELLO"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.789962, 0.613155, 0, -0.613155, 0.789962, 0, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(10, 1, 10)
+
+[node name="Players" type="Node" parent="."]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="Players"]
+spawn_path = NodePath("..")
+script = ExtResource("1_w2twt")
+player_scene = ExtResource("2_7ykc4")
+
+[node name="SpawnPosition" type="Marker3D" parent="Players"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.73393, 0)
+
+[connection signal="pressed" from="LobbyUI/VBoxContainer/HBoxContainer/HostBtn" to="." method="_on_host_btn_pressed"]
+[connection signal="pressed" from="LobbyUI/VBoxContainer/HBoxContainer/JoinBtn" to="." method="_on_join_btn_pressed"]

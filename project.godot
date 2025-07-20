@@ -1,0 +1,31 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Prox Chat Game"
+run/main_scene="uid://chwco25oabi64"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+SteamManager="*res://scripts/steam_manager.gd"
+
+[dotnet]
+
+project/assembly_name="Prox Chat Game"
+
+[layer_names]
+
+3d_render/layer_1="world"
+3d_render/layer_2="players"
+3d_physics/layer_1="world"
+3d_physics/layer_2="players"
