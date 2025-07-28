@@ -1,0 +1,6 @@
+syntax = "proto3"
+ 
+message SteamInfo {
+	int64 steam_id = 1;
+	string steam_user_name = 2;
+}

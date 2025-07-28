@@ -59,7 +59,7 @@ func join_lobby(lobby_id: int):
 
 func on_lobby_created(result, lobby_id) -> void:
 	if result != Steam.Result.RESULT_OK:
-		printerr("Failed to create lobby")
+		printerr("[on_lobby_created] Failed to create lobby ", result)
 		return
 	
 	self.lobby_id = lobby_id
@@ -68,8 +68,8 @@ func on_lobby_created(result, lobby_id) -> void:
 	SteamManager.lobby_id = lobby_id
 	SteamManager.is_lobby_host = true
 	enable_ui(false)
-	print("Created lobby!")
 	player_spawner.spawn_host()
+	print("[on_lobby_created] Created lobby!")
 
 
 func enable_ui(value):

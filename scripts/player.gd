@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 @onready var camera_3d: Camera3D = $Camera3D
 @onready var name_label: Label3D = $NameLabel
-@export var user_name: String = "Terry"
+@export var player_name: String = "Terry"
 @export var steam_id: int = 0
 
 const SPEED = 5.0
@@ -13,12 +13,12 @@ func _ready() -> void:
 	
 	if is_multiplayer_authority():
 		camera_3d.set_current(true)
-		user_name = SteamManager.STEAM_USERNAME
+		player_name = SteamManager.STEAM_USERNAME
 		steam_id = SteamManager.STEAM_ID
 	else:
 		steam_id = multiplayer.multiplayer_peer.get_steam64_from_peer_id(get_multiplayer_authority())
-		user_name = Steam.getFriendPersonaName(steam_id)
-		name_label.text = user_name
+		player_name = Steam.getFriendPersonaName(steam_id)
+		name_label.text = player_name
 		
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority():

@@ -6,13 +6,11 @@ var players = {}
 
 func _ready() -> void:
 	spawn_function = spawn_player
-	print("is authority: ", is_multiplayer_authority())
 	if is_multiplayer_authority():
 		multiplayer.peer_connected.connect(spawn)
 		multiplayer.peer_disconnected.connect(remove_player)
 
 func spawn_host():
-	print("[spawn host] is authority: ", is_multiplayer_authority())
 	if is_multiplayer_authority():
 		spawn(1)
 

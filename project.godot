@@ -23,6 +23,10 @@ SteamManager="*res://scripts/steam_manager.gd"
 
 project/assembly_name="Prox Chat Game"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/protobuf/plugin.cfg")
+
 [layer_names]
 
 3d_render/layer_1="world"

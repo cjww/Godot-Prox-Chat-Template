@@ -1,0 +1,27 @@
+syntax = "proto2";
+
+enum PacketType {
+	PACKET_TYPE_UNSPECIFIED = 0;
+	PACKET_TYPE_STEAM_ID = 1;
+	PACKET_TYPE_MESSAGE = 2;
+	PACKET_TYPE_VOICE = 3;
+}
+
+message Packet {
+	optional PacketType type = 1;
+	optional bytes data = 2; 
+}
+
+message SteamInfo {
+	optional int64 steam_id = 1;
+	optional string steam_username = 2;
+}
+
+message VoiceData {
+	optional bytes voice_data = 1;
+}
+
+message Message {
+	optional int64 receiver_id = 1;
+	optional string text = 2;
+}
