@@ -15,6 +15,10 @@ run/main_scene="uid://chwco25oabi64"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+driver/enable_input=true
+
 [autoload]
 
 SteamManager="*res://scripts/steam_manager.gd"

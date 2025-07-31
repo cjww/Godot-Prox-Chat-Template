@@ -21,6 +21,10 @@ var network_playback: AudioStreamGeneratorPlayback = null
 var network_voice_buffer: PackedByteArray = PackedByteArray()
 var packet_read_limit: int = 5
 
+var listening_player_dir := Vector2.ONE
+var mouse_locked: bool = false
+var look_sensitivity: float = 0.01
+
 func _ready() -> void:
 	add_to_group("players")
 	set_sample_rate(true)
@@ -33,6 +37,7 @@ func _ready() -> void:
 		camera_3d.set_current(true)
 		player_name = SteamManager.STEAM_USERNAME
 		steam_id = SteamManager.STEAM_ID
+		name_label.text = ""
 	else:
 		steam_id = multiplayer.multiplayer_peer.get_steam64_from_peer_id(get_multiplayer_authority())
 		player_name = Steam.getFriendPersonaName(steam_id)
@@ -43,6 +48,10 @@ func _ready() -> void:
 	for device in devices:
 		print(" ", device)
 	print("Current audio device: ", AudioServer.input_device)
+	
+	if get_window().has_focus():
+		_on_window_focus()
+	get_window().focus_entered.connect(_on_window_focus)
 	
 func _process(delta: float) -> void:
 	if is_multiplayer_authority():
@@ -79,7 +88,24 @@ func _input(event: InputEvent) -> void:
 		record_voice(true)
 	elif Input.is_action_just_released("voice_record"):
 		record_voice(false)
+	
+	if event.is_action_pressed("ui_cancel"):
+		mouse_locked = false
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	if event is InputEventMouseMotion:
+		if get_window().has_focus() and mouse_locked:
+			var diff = -event.screen_relative
+			rotate_y(diff.x * look_sensitivity)
+			camera_3d.rotate_object_local(Vector3.RIGHT, diff.y * look_sensitivity)
+			camera_3d.rotation.x = clamp(camera_3d.rotation.x, deg_to_rad(-90.0), deg_to_rad(90.0))
+	if event is InputEventMouseButton:
+		if !mouse_locked:
+			_on_window_focus()
 		
+func _on_window_focus():
+	mouse_locked = true
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func check_for_voice():
 	var available_voice := Steam.getAvailableVoice()
@@ -129,7 +155,7 @@ func _process_voice_data_buffer(buffer: PackedByteArray, playback: AudioStreamGe
 		var amplitude: float = float(raw_value - 32768) / 32768.0
 
 		# push_frame() takes a Vector2. The x represents the left channel and the y represents the right channel
-		playback.push_frame(Vector2(amplitude, amplitude))
+		playback.push_frame(listening_player_dir * amplitude)
 
 		# Delete the used samples
 		buffer.remove_at(0)
