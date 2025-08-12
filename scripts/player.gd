@@ -134,14 +134,10 @@ func process_voice_data(voice_data: PackedByteArray, voice_source: String):
 		if voice_source == "local":
 			local_voice_buffer = decompressed_voice["uncompressed"]
 			local_voice_buffer.resize(decompressed_voice["size"])
-			# We now iterate through the local_voice_buffer and push the samples to the audio generator
-				
 			_process_voice_data_buffer(local_voice_buffer, local_playback)
 		elif voice_source == "network":
 			network_voice_buffer = decompressed_voice["uncompressed"]
 			network_voice_buffer.resize(decompressed_voice["size"])
-			# We now iterate through the local_voice_buffer and push the samples to the audio generator
-				
 			_process_voice_data_buffer(network_voice_buffer, network_playback)
 
 func _process_voice_data_buffer(buffer: PackedByteArray, playback: AudioStreamGeneratorPlayback):

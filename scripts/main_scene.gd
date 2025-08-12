@@ -11,7 +11,7 @@ var peer = SteamMultiplayerPeer
 
 func _ready() -> void:
 	peer = SteamManager.peer
-	peer.lobby_created.connect(on_lobby_created)
+	peer.lobby_created.connect(_on_lobby_created)
 	
 	Steam.lobby_match_list.connect(_on_lobby_match)
 
@@ -37,7 +37,11 @@ func open_lobby_list():
 	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
 	Steam.requestLobbyList()
 
-func _on_lobby_match(lobbies):
+func _on_lobby_match(lobbies: Array):
+	if lobbies.is_empty():
+		print("No lobbies found")
+		return
+		
 	for lobby in lobbies:
 		var lobby_name := Steam.getLobbyData(lobby, "name")
 		var members := Steam.getNumLobbyMembers(lobby)
@@ -57,9 +61,9 @@ func join_lobby(lobby_id: int):
 	print("Joined lobby ", Steam.getLobbyData(lobby_id, "name"))
 	enable_ui(false)
 
-func on_lobby_created(result, lobby_id) -> void:
+func _on_lobby_created(result, lobby_id) -> void:
 	if result != Steam.Result.RESULT_OK:
-		printerr("[on_lobby_created] Failed to create lobby ", result)
+		printerr("[_on_lobby_created] Failed to create lobby ", result)
 		return
 	
 	self.lobby_id = lobby_id
@@ -69,7 +73,7 @@ func on_lobby_created(result, lobby_id) -> void:
 	SteamManager.is_lobby_host = true
 	enable_ui(false)
 	player_spawner.spawn_host()
-	print("[on_lobby_created] Created lobby!")
+	print("[_on_lobby_created] Created lobby!")
 
 
 func enable_ui(value):
