@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://chwco25oabi64"]
+[gd_scene load_steps=6 format=3 uid="uid://chwco25oabi64"]
 
 [ext_resource type="Script" uid="uid://cgd012qomex80" path="res://scripts/main_scene.gd" id="1_7ykc4"]
 [ext_resource type="Script" uid="uid://76dl87lk3o6f" path="res://scripts/player_spawner.gd" id="1_w2twt"]
 [ext_resource type="PackedScene" uid="uid://dee1p76o0ldav" path="res://scenes/player.tscn" id="2_7ykc4"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_7ykc4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pu3yx"]
+albedo_texture = SubResource("PlaceholderTexture2D_7ykc4")
 
 [node name="MainScene" type="Node3D"]
 script = ExtResource("1_7ykc4")
@@ -53,9 +58,10 @@ text = "HELLO"
 transform = Transform3D(1, 0, 0, 0, 0.789962, 0.613155, 0, -0.613155, 0.789962, 0, 0, 0)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+transform = Transform3D(57.0145, 0, 0, 0, 1.17506, 0, 0, 0, 62.7463, 0, -0.5, 0)
 use_collision = true
 size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_pu3yx")
 
 [node name="Players" type="Node" parent="."]
 

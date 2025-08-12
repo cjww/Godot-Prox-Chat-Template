@@ -96,7 +96,7 @@ func read_p2p_packet(channel: int = 0):
 			if sender_player == null:
 				printerr("[read_p2p_packet] Could not find sending_player when parsing voice packet")
 				return
-			sender_player.process_voice_data(voice_data.get_voice_data(), "network")
+			sender_player.audio_network_player.process_voice_data(voice_data.get_voice_data())
 
 func get_player(steam_id: int) -> Node:
 	var players := get_tree().get_nodes_in_group("players")
